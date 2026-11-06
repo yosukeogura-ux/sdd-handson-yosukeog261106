@@ -1,0 +1,37 @@
+# 秘密情報（security.md: .env は gitignore 登録必須）
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.bak
+
+# 依存・生成物（output/ はフォルダ維持用の .gitkeep のみ管理する）
+**/output/*
+!**/output/.gitkeep
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.pdf
+*.ttc
+*.ttf
+*.*Zone.Identifier
+
+# ローカル設定・フックの一時ファイル
+.claude/settings.local.json
+.claude/.consistency-warned
+.claude/.handover-reminder-state.json
+
+# OS・エディタ
+.DS_Store
+Thumbs.db
+
+# ログ（セッション単位の作業ログは git 管理外。書式定義の README.md のみ管理する）
+docs/project/log/*
+!docs/project/log/README.md
+
+# プロジェクト固有

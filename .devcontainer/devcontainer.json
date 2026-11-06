@@ -1,0 +1,27 @@
+{
+    "name": "AIDD Sandbox dev server",
+    "dockerComposeFile": "docker-compose.yaml",
+    "service": "sandbox",
+    "features": {
+        // Python3とNode.jsはインストール済
+        // Javaで開発する場合、下のコメントを外す
+        //"ghcr.io/devcontainers/features/java:1": {
+        //    "version": "17",
+        //    "installMaven": true
+        //}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // Javaで開発する場合、下のコメントを外す
+                //"vscjava.vscode-java-pack"
+                "ms-python.python",
+                "ms-python.debugpy",
+                "ms-python.vscode-python-envs"
+            ]
+        }
+    },
+    "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+    "remoteUser": "developer",
+    "initializeCommand": "echo \"WORKSPACE_NAME=${localWorkspaceFolderBasename}\" > \"${localWorkspaceFolder}/.devcontainer/.env\""
+}

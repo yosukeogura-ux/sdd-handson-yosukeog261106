@@ -1,0 +1,75 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.py\"; else echo '警告: Python が見つからないため、このテンプレートのフック（進捗の自動注入・危険コマンド/パッケージ追加/秘密情報のブロック・保護ブランチのガード・push前の進捗更新確認・自動フォーマット・整合性チェック・ログ記録の提案）はすべて無効です。Python 3.9 以降を導入してください（README「前提条件」参照）。'; fi"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f /etc/claude-code/hooks/block-dangerous.py ]; then exit 0; elif python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-dangerous.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-dangerous.py\"; else exit 0; fi"
+          },
+          {
+            "type": "command",
+            "command": "if [ -f /etc/claude-code/hooks/block-package-install.py ]; then exit 0; elif python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-package-install.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-package-install.py\"; else exit 0; fi"
+          },
+          {
+            "type": "command",
+            "command": "if [ -f /etc/claude-code/hooks/guard-protected-branch.py ]; then exit 0; elif python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-protected-branch.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-protected-branch.py\"; else exit 0; fi"
+          },
+          {
+            "type": "command",
+            "command": "if python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/remind-progress-update.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/remind-progress-update.py\"; else exit 0; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f /etc/claude-code/hooks/check-secrets.py ]; then exit 0; elif python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-secrets.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-secrets.py\"; else exit 0; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/lint-and-format.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/lint-and-format.py\"; else exit 0; fi"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-consistency.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/check-consistency.py\"; else exit 0; fi"
+          },
+          {
+            "type": "command",
+            "command": "if python3 -c '' >/dev/null 2>&1; then exec python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/remind-handover.py\"; elif python -c '' >/dev/null 2>&1; then exec python \"$CLAUDE_PROJECT_DIR/.claude/hooks/remind-handover.py\"; else exit 0; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "playwright",
+    "playwright-firefox"
+  ]
+}

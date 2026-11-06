@@ -1,0 +1,22 @@
+services:
+  sandbox:
+    image: ghcr.io/kyoshinsystemservice/aidd-sandbox:1.2.2
+    privileged: true
+    volumes:
+      - docker-data:/var/lib/docker
+      - ..:/workspace/${WORKSPACE_NAME:?WORKSPACE_NAME is not set. Reopen in a Dev Container so initializeCommand can generate .devcontainer/.env}
+    environment:
+      - http_proxy=${http_proxy:-}
+      - https_proxy=${https_proxy:-}
+      - no_proxy=${no_proxy:-}
+      - HTTP_PROXY=${HTTP_PROXY:-}
+      - HTTPS_PROXY=${HTTPS_PROXY:-}
+      - NO_PROXY=${NO_PROXY:-}
+
+networks:
+  default:
+    driver_opts:
+      com.docker.network.driver.mtu: 1400
+
+volumes:
+  docker-data:
